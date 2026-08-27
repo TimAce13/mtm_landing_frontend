@@ -1,0 +1,136 @@
+/* ============================================================
+   LoginPage
+   ============================================================ */
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-canvas);
+  padding: 24px;
+}
+
+.container {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* --- Header --- */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.logoImg {
+  width: 112px;
+  height: 112px;
+  display: block;
+  filter: drop-shadow(0 8px 28px color-mix(in srgb, var(--color-accent) 30%, transparent));
+}
+/* Light theme: dark logo gets a tasteful accent halo + soft drop, so it feels
+   like a branded badge rather than a heavy dark block on the bright canvas. */
+[data-scheme="light"] .logoImg {
+  filter:
+    drop-shadow(0 16px 36px color-mix(in srgb, var(--color-accent) 28%, transparent))
+    drop-shadow(0 4px 12px rgba(15, 30, 50, 0.14));
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+/* --- Form --- */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* --- Error banner --- */
+.errorBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--color-error-tint);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-md);
+  color: var(--color-error);
+  font-size: 16px;
+  line-height: 1.5;
+  animation: fadeIn 0.15s ease;
+}
+
+/* Lockout variant — warning color instead of error */
+.locked {
+  background: var(--color-warning-tint);
+  border-color: var(--color-warning);
+  color: var(--color-warning);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* --- Дополнения биллинга (success-баннер, ссылки под формой) --- */
+
+.successBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--color-success-tint);
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-md);
+  color: var(--color-success);
+  font-size: 16px;
+  line-height: 1.5;
+  animation: fadeIn 0.15s ease;
+}
+
+.links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  font-size: 16px;
+}
+
+.links a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+.hint {
+  font-size: 15px;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin: 0;
+}
+
+.centerCard {
+  background: var(--gradient-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+}

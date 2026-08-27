@@ -1,0 +1,850 @@
+/* ============================================================
+   MTMAnalytics — Design Tokens
+   ============================================================
+   Тем несколько, выбор — в переключателе слева внизу.
+
+   Как это устроено:
+     data-theme  = идентификатор темы (dark | light | graphite | terminal | paper | steel)
+     data-scheme = светлая она или тёмная (dark | light)
+
+   data-scheme нужен отдельно, потому что часть компонентов подкручивает
+   контрастность именно для СВЕТЛЫХ тем (белый текст на акценте вместо тёмного,
+   color-scheme для нативных инпутов). Раньше это делалось через
+   [data-theme="light"] — с появлением второй светлой темы такой селектор стал
+   бы врать, поэтому все такие правила переехали на [data-scheme="light"].
+
+   Каждая тема ОБЯЗАНА определить все 41 цветовых токена: незаданный токен
+   унаследуется от дефолта (тёмной) и даст нечитаемое пятно.
+
+   Селекторы тем — :root[data-theme="…"] (специфичность 0,2,0), чтобы гарантированно
+   перебивать общие значения из :root (0,1,0) независимо от порядка в файле.
+   ============================================================ */
+
+/* ============================================================
+   ОБЩЕЕ ДЛЯ ВСЕХ ТЕМ
+   ============================================================ */
+:root {
+  /* --- Fixed accent palette (theme-independent) --- */
+  --color-orange:  #FF6B35;
+  --color-green:   #1ED47A;
+  --color-red:     #FF5D6E;
+  --color-blue:    #57C7FF;
+  --color-purple:  #AF52DE;
+  --color-magenta: #D600AA;
+
+  /* --- Typography --- */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* --- Spacing scale --- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* --- Border radius (темы могут переопределять) --- */
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  16px;
+  --radius-xl:  20px;
+  --radius-2xl: 24px;
+  --radius-pill: 999px;
+
+  /* --- Shadows (темы могут переопределять) --- */
+  --shadow-card:   0 4px 12px rgba(0, 0, 0, 0.20);
+  --shadow-modal:  0 8px 24px rgba(0, 0, 0, 0.30);
+  --shadow-elevated: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  /* --- Transitions --- */
+  --transition-fast:   all 0.12s ease;
+  --transition-base:   all 0.18s ease;
+  --transition-slow:   all 0.28s ease;
+
+  /* --- Левый навбар ("рейка") ---
+     Вынесен в отдельные токены, чтобы тема могла сделать тёмную рейку при
+     светлом контенте — так устроены Helium 10, Amplitude, Metabase и почти все
+     западные SaaS. Без этого навбар всегда красился теми же surface/text, что и
+     страница, и такой связки было не собрать.
+     Дефолты равны прежним значениям: существующие темы не меняются. */
+  --rail-bg:          var(--gradient-hero);
+  --rail-border:      var(--color-border);
+  --rail-text:        var(--color-text-primary);
+  --rail-text-dim:    var(--color-text-secondary);
+  --rail-text-muted:  var(--color-text-muted);
+  --rail-text-faint:  var(--color-text-disabled);
+  --rail-hover-bg:    var(--color-surface-hover);
+  --rail-active-bg:   var(--color-surface-elevated);
+  --rail-accent:      var(--color-accent);
+
+  /* ============================================================
+     ПЛОТНОСТЬ И ТИПОГРАФИКА ИНТЕРФЕЙСА
+     ============================================================
+     Через эти токены тема управляет не только цветом, но и «воздухом»:
+     регистром подписей, отступами карточек, размером цифр. Иначе переделать
+     разметку было бы нельзя — правка в компоненте меняла бы вид ВСЕХ тем, а
+     Морская и Светлая должны остаться нетронутыми.
+
+     Значения ниже равны тому, что было захардкожено в компонентах, поэтому
+     Морская и Светлая не сдвигаются ни на пиксель. Плотный набор подключают
+     только остальные темы — блок «КОМПАКТНАЯ РАЗМЕТКА» ниже.
+
+     Размеры заданы МНОЖИТЕЛЯМИ, а не абсолютными значениями. Причина: у каждой
+     страницы свои исходные числа (подпись KPI на дашборде 11px, на кампаниях
+     12px, отступы карточек 16/18 и 12/16). Общий абсолютный токен молча
+     причесал бы их под одну гребёнку — то есть изменил бы Морскую. При
+     множителе 1 calc() возвращает ровно прежнее число, до пикселя. */
+
+  /* Регистр микроподписей (ЗАКАЗАНО, РАСХОД, названия колонок) */
+  --ui-label-transform: uppercase;
+
+  /* Множители: 1 = как было */
+  --ui-density:     1;    /* отступы, зазоры, паддинги карточек */
+  --ui-label-scale: 1;    /* размер и разрядка микроподписей */
+  --ui-value-scale: 1;    /* размер крупных чисел KPI */
+
+  --ui-card-border: 1px;
+  --ui-kpi-columns: repeat(5, 1fr);
+}
+
+/* ============================================================
+   КОМПАКТНАЯ РАЗМЕТКА — для всех тем, КРОМЕ Морской и Светлой.
+   ============================================================
+   Здесь и живёт «переделка разметки»: обычный регистр вместо капса, меньше
+   воздуха, тоньше обвязка. Морская и Светлая сюда намеренно не входят —
+   у них остаются дефолты выше, то есть исходный вид продукта.
+   Функциональность не затрагивается: меняются только размеры и регистр. */
+:root[data-theme="graphite"],
+:root[data-theme="terminal"],
+:root[data-theme="paper"],
+:root[data-theme="steel"],
+:root[data-theme="helium"],
+:root[data-theme="contrast"],
+:root[data-theme="sepia"],
+:root[data-theme="indigo"] {
+  --ui-label-transform: none;
+  --ui-label-scale: 1.09;   /* капс сняли — подпись можно вернуть к 12px */
+  --ui-density:     0.82;
+  --ui-value-scale: 0.92;
+}
+
+/* Терминал — ещё плотнее: тема ровно про это */
+:root[data-theme="terminal"] {
+  --ui-density:     0.72;
+  --ui-value-scale: 0.86;
+}
+
+/* ============================================================
+   МОРСКАЯ — тема по умолчанию (была «Тёмная»)
+   Значения не менялись: это исходный вид продукта.
+   ============================================================ */
+:root,
+:root[data-theme="dark"] {
+  /* --- Surfaces --- */
+  --color-canvas:           #08111B;
+  --color-surface-base:     #08111B;
+  --color-surface-card:     #0D1824;
+  --color-surface-elevated: #112131;
+  --color-surface-hover:    #132537;
+  --color-surface-active:   #163047;
+
+  /* --- Text --- */
+  --color-text-primary:   #E7EEF6;
+  --color-text-secondary: #92A6B8;
+  --color-text-muted:     #6D8194;
+  --color-text-disabled:  #546075;
+
+  /* --- Accent / Primary --- */
+  --color-accent:             #18C7C0;
+  --color-accent-hover:       #24D7CF;
+  --color-accent-dim:         #0E6F73;
+  --color-accent-text:        #D9FBF9;
+  --color-accent-glass:       #3A8D94;
+  --color-focus-ring:         rgba(24, 199, 192, 0.28);
+
+  /* --- Semantic --- */
+  --color-success: #1ED47A;
+  --color-warning: #F5B84B;
+  --color-error:   #FF5D6E;
+  --color-info:    #57C7FF;
+
+  /* --- Semantic Tints --- */
+  --color-success-tint: #173326;
+  --color-warning-tint: #3A2B13;
+  --color-error-tint:   #3A1E24;
+  --color-info-tint:    #163047;
+
+  /* --- Borders & Strokes --- */
+  --color-border:        #22364A;
+  --color-border-light:  #2B425B;
+  --color-stroke-3:      #35516E;
+  --color-glass-stroke:  #22364A;
+
+  /* --- Button Surfaces --- */
+  --color-btn-surface:        #0D1824;
+  --color-btn-surface-hover:  #132537;
+  --color-btn-surface-active: #163047;
+  --color-btn-surface-alt:    #112131;
+  --color-btn-border:         #2B425B;
+
+  /* --- Skeleton / Overlays --- */
+  --color-skeleton-base:      #172B40;
+  --color-skeleton-highlight: #31577C;
+  --color-skeleton-stroke:    #22364A;
+  --color-loading-overlay:    rgba(8, 17, 27, 0.80);
+  --color-sheet-backdrop:     rgba(8, 17, 27, 0.70);
+
+  /* --- Gradients --- */
+  --gradient-card:   linear-gradient(135deg, #0D1824, #112131);
+  --gradient-accent: linear-gradient(135deg, #18C7C0, #24D7CF);
+  --gradient-hero:   linear-gradient(180deg, #112131, #08111B);
+}
+
+/* ============================================================
+   СВЕТЛАЯ — вторая исходная тема. Значения не менялись.
+   ============================================================ */
+:root[data-theme="light"] {
+  /* --- Surfaces --- */
+  --color-canvas:           #F4F7FB;
+  --color-surface-base:     #F4F7FB;
+  --color-surface-card:     #FFFFFF;
+  --color-surface-elevated: #F8FBFD;
+  --color-surface-hover:    #F1F7FA;
+  --color-surface-active:   #E8F5F7;
+
+  /* --- Text --- */
+  --color-text-primary:   #102030;
+  --color-text-secondary: #5E7286;
+  --color-text-muted:     #8497A8;
+  --color-text-disabled:  #A3B3C1;
+
+  /* --- Accent / Primary --- */
+  --color-accent:             #0D9E9A;
+  --color-accent-hover:       #0B8E8B;
+  --color-accent-dim:         #DDF5F4;
+  --color-accent-text:        #0D9E9A;
+  --color-accent-glass:       #A8DCDC;
+  --color-focus-ring:         rgba(13, 158, 154, 0.20);
+
+  /* --- Semantic --- */
+  --color-success: #0F9F5F;
+  --color-warning: #B8831A;
+  --color-error:   #D84B5E;
+  --color-info:    #2F8CFF;
+
+  /* --- Semantic Tints --- */
+  --color-success-tint: #E7F7EF;
+  --color-warning-tint: #FFF4DE;
+  --color-error-tint:   #FBE8EB;
+  --color-info-tint:    #E7F1FF;
+
+  /* --- Borders & Strokes --- */
+  --color-border:        #D7E2EC;
+  --color-border-light:  #C7D5E2;
+  --color-stroke-3:      #B8CBDD;
+  --color-glass-stroke:  #D7E2EC;
+
+  /* --- Button Surfaces --- */
+  --color-btn-surface:        #FFFFFF;
+  --color-btn-surface-hover:  #EFF8F9;
+  --color-btn-surface-active: #DDF5F4;
+  --color-btn-surface-alt:    #F8FBFD;
+  --color-btn-border:         #C7D5E2;
+
+  /* --- Skeleton / Overlays --- */
+  --color-skeleton-base:      #DCE7F0;
+  --color-skeleton-highlight: #FFFFFF;
+  --color-skeleton-stroke:    #D7E2EC;
+  --color-loading-overlay:    rgba(244, 247, 251, 0.87);
+  --color-sheet-backdrop:     rgba(244, 247, 251, 0.72);
+
+  /* --- Gradients --- */
+  --gradient-card:   linear-gradient(135deg, #FFFFFF, #F8FBFD);
+  --gradient-accent: linear-gradient(135deg, #0D9E9A, #0B8E8B);
+  --gradient-hero:   linear-gradient(180deg, #FFFFFF, #F4F7FB);
+}
+
+/* ============================================================
+   ГРАФИТ — тёмная нейтральная, без синевы и свечения.
+   Плоские поверхности, малые скругления, янтарный акцент.
+   Задача темы: снять «шаблонный» вид тёмно-синего дашборда.
+   ============================================================ */
+:root[data-theme="graphite"] {
+  --color-canvas:           #101113;
+  --color-surface-base:     #101113;
+  --color-surface-card:     #17181B;
+  --color-surface-elevated: #1D1F23;
+  --color-surface-hover:    #232529;
+  --color-surface-active:   #2A2D32;
+
+  --color-text-primary:   #E9EAEC;
+  --color-text-secondary: #9DA1A8;
+  --color-text-muted:     #767A81;
+  --color-text-disabled:  #565A61;
+
+  --color-accent:             #E0A458;
+  --color-accent-hover:       #EDB570;
+  --color-accent-dim:         #4A3822;
+  --color-accent-text:        #F6E3C7;
+  --color-accent-glass:       #8A6B3C;
+  --color-focus-ring:         rgba(224, 164, 88, 0.26);
+
+  --color-success: #4FB980;
+  --color-warning: #E0A458;
+  --color-error:   #E5616F;
+  --color-info:    #7BA7D4;
+
+  --color-success-tint: #17281F;
+  --color-warning-tint: #2A2317;
+  --color-error-tint:   #2B1A1D;
+  --color-info-tint:    #1A2430;
+
+  --color-border:        #2A2D32;
+  --color-border-light:  #363940;
+  --color-stroke-3:      #44484F;
+  --color-glass-stroke:  #2A2D32;
+
+  --color-btn-surface:        #17181B;
+  --color-btn-surface-hover:  #232529;
+  --color-btn-surface-active: #2A2D32;
+  --color-btn-surface-alt:    #1D1F23;
+  --color-btn-border:         #363940;
+
+  --color-skeleton-base:      #1D1F23;
+  --color-skeleton-highlight: #33363C;
+  --color-skeleton-stroke:    #2A2D32;
+  --color-loading-overlay:    rgba(16, 17, 19, 0.82);
+  --color-sheet-backdrop:     rgba(16, 17, 19, 0.72);
+
+  /* Плоско: градиент на карточках — главный признак «сгенерированного» вида */
+  --gradient-card:   #17181B;
+  --gradient-accent: linear-gradient(135deg, #E0A458, #EDB570);
+  --gradient-hero:   #17181B;
+
+  --radius-sm:  6px;
+  --radius-md:  8px;
+  --radius-lg:  10px;
+  --radius-xl:  12px;
+  --radius-2xl: 14px;
+
+  --shadow-card:     none;
+  --shadow-elevated: none;
+  --shadow-modal:    0 12px 32px rgba(0, 0, 0, 0.55);
+
+  /* Onest — геометрический гротеск с родной кириллицей */
+  --font-sans: 'Onest', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ============================================================
+   ТЕРМИНАЛ — максимально плотная тёмная, почти без скруглений.
+   Для тех, кто смотрит в цифры целый день.
+   ============================================================ */
+:root[data-theme="terminal"] {
+  --color-canvas:           #0A0B0C;
+  --color-surface-base:     #0A0B0C;
+  --color-surface-card:     #0F1112;
+  --color-surface-elevated: #151719;
+  --color-surface-hover:    #1B1E20;
+  --color-surface-active:   #212528;
+
+  --color-text-primary:   #D9E0E2;
+  --color-text-secondary: #8D979B;
+  --color-text-muted:     #6B757B;
+  --color-text-disabled:  #4E575D;
+
+  --color-accent:             #35D07F;
+  --color-accent-hover:       #4BE093;
+  --color-accent-dim:         #10402A;
+  --color-accent-text:        #C6F5DC;
+  --color-accent-glass:       #2E7A55;
+  --color-focus-ring:         rgba(53, 208, 127, 0.26);
+
+  --color-success: #35D07F;
+  --color-warning: #E3B341;
+  --color-error:   #F2545B;
+  --color-info:    #58A6FF;
+
+  --color-success-tint: #0E2A1C;
+  --color-warning-tint: #2A2312;
+  --color-error-tint:   #2B1517;
+  --color-info-tint:    #11233A;
+
+  --color-border:        #202528;
+  --color-border-light:  #2B3134;
+  --color-stroke-3:      #383F43;
+  --color-glass-stroke:  #202528;
+
+  --color-btn-surface:        #0F1112;
+  --color-btn-surface-hover:  #1B1E20;
+  --color-btn-surface-active: #212528;
+  --color-btn-surface-alt:    #151719;
+  --color-btn-border:         #2B3134;
+
+  --color-skeleton-base:      #151719;
+  --color-skeleton-highlight: #2B3134;
+  --color-skeleton-stroke:    #202528;
+  --color-loading-overlay:    rgba(10, 11, 12, 0.85);
+  --color-sheet-backdrop:     rgba(10, 11, 12, 0.75);
+
+  --gradient-card:   #0F1112;
+  --gradient-accent: linear-gradient(135deg, #35D07F, #4BE093);
+  --gradient-hero:   #0F1112;
+
+  --radius-sm:  4px;
+  --radius-md:  5px;
+  --radius-lg:  6px;
+  --radius-xl:  8px;
+  --radius-2xl: 10px;
+
+  --shadow-card:     none;
+  --shadow-elevated: none;
+  --shadow-modal:    0 10px 28px rgba(0, 0, 0, 0.6);
+
+  /* Моноширинный интерфейс целиком — то, ради чего эта тема и существует:
+     все цифры встают в колонку сами, без tabular-nums. */
+  --font-sans: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+}
+
+/* ============================================================
+   БУМАГА — тёплая светлая, чернильный текст, глубокий зелёный.
+   Читается как документ/отчёт, а не как лендинг.
+   ============================================================ */
+:root[data-theme="paper"] {
+  --color-canvas:           #F6F3ED;
+  --color-surface-base:     #F6F3ED;
+  --color-surface-card:     #FFFDF9;
+  --color-surface-elevated: #FAF7F1;
+  --color-surface-hover:    #F1EDE4;
+  --color-surface-active:   #E9E3D7;
+
+  --color-text-primary:   #1E1C18;
+  --color-text-secondary: #57524A;
+  --color-text-muted:     #837D72;
+  --color-text-disabled:  #A9A296;
+
+  --color-accent:             #1F6F4A;
+  --color-accent-hover:       #185A3C;
+  --color-accent-dim:         #DCEAE2;
+  --color-accent-text:        #1F6F4A;
+  --color-accent-glass:       #A9CBB8;
+  --color-focus-ring:         rgba(31, 111, 74, 0.20);
+
+  --color-success: #1F6F4A;
+  --color-warning: #96660F;
+  --color-error:   #B03A39;
+  --color-info:    #2A6B9E;
+
+  --color-success-tint: #E3EFE8;
+  --color-warning-tint: #F6EAD2;
+  --color-error-tint:   #F7E5E2;
+  --color-info-tint:    #E5EEF5;
+
+  --color-border:        #DED8CB;
+  --color-border-light:  #CDC6B6;
+  --color-stroke-3:      #B8B09F;
+  --color-glass-stroke:  #DED8CB;
+
+  --color-btn-surface:        #FFFDF9;
+  --color-btn-surface-hover:  #F1EDE4;
+  --color-btn-surface-active: #E9E3D7;
+  --color-btn-surface-alt:    #FAF7F1;
+  --color-btn-border:         #CDC6B6;
+
+  --color-skeleton-base:      #EAE5DA;
+  --color-skeleton-highlight: #FFFDF9;
+  --color-skeleton-stroke:    #DED8CB;
+  --color-loading-overlay:    rgba(246, 243, 237, 0.88);
+  --color-sheet-backdrop:     rgba(246, 243, 237, 0.74);
+
+  --gradient-card:   #FFFDF9;
+  --gradient-accent: linear-gradient(135deg, #1F6F4A, #185A3C);
+  --gradient-hero:   #FFFDF9;
+
+  --radius-sm:  5px;
+  --radius-md:  7px;
+  --radius-lg:  9px;
+  --radius-xl:  10px;
+  --radius-2xl: 12px;
+
+  --shadow-card:     none;
+  --shadow-elevated: none;
+  --shadow-modal:    0 10px 30px rgba(60, 50, 35, 0.18);
+
+  /* Golos Text — гуманистический, рисовался под русский язык */
+  --font-sans: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ============================================================
+   СТАЛЬ — холодная светлая, нейтрально-серая, синий акцент.
+   Ближе всего к тому, как выглядят бухгалтерские и учётные сервисы.
+   ============================================================ */
+:root[data-theme="steel"] {
+  --color-canvas:           #F5F6F8;
+  --color-surface-base:     #F5F6F8;
+  --color-surface-card:     #FFFFFF;
+  --color-surface-elevated: #FAFBFC;
+  --color-surface-hover:    #F0F2F5;
+  --color-surface-active:   #E7EAEF;
+
+  --color-text-primary:   #16181D;
+  --color-text-secondary: #545A64;
+  --color-text-muted:     #7B828D;
+  --color-text-disabled:  #A1A7B1;
+
+  --color-accent:             #2F62D9;
+  --color-accent-hover:       #2653BC;
+  --color-accent-dim:         #E3EAFB;
+  --color-accent-text:        #2F62D9;
+  --color-accent-glass:       #A9BEEE;
+  --color-focus-ring:         rgba(47, 98, 217, 0.20);
+
+  --color-success: #14874B;
+  --color-warning: #A8720C;
+  --color-error:   #C6303F;
+  --color-info:    #2F62D9;
+
+  --color-success-tint: #E3F2E9;
+  --color-warning-tint: #FAEFD8;
+  --color-error-tint:   #FAE4E6;
+  --color-info-tint:    #E7EDFB;
+
+  --color-border:        #E1E4E9;
+  --color-border-light:  #CED3DB;
+  --color-stroke-3:      #B3BAC4;
+  --color-glass-stroke:  #E1E4E9;
+
+  --color-btn-surface:        #FFFFFF;
+  --color-btn-surface-hover:  #F0F2F5;
+  --color-btn-surface-active: #E7EAEF;
+  --color-btn-surface-alt:    #FAFBFC;
+  --color-btn-border:         #CED3DB;
+
+  --color-skeleton-base:      #E7EAEF;
+  --color-skeleton-highlight: #FFFFFF;
+  --color-skeleton-stroke:    #E1E4E9;
+  --color-loading-overlay:    rgba(245, 246, 248, 0.88);
+  --color-sheet-backdrop:     rgba(245, 246, 248, 0.74);
+
+  --gradient-card:   #FFFFFF;
+  --gradient-accent: linear-gradient(135deg, #2F62D9, #2653BC);
+  --gradient-hero:   #FFFFFF;
+
+  --radius-sm:  6px;
+  --radius-md:  8px;
+  --radius-lg:  10px;
+  --radius-xl:  12px;
+  --radius-2xl: 14px;
+
+  --shadow-card:     0 1px 2px rgba(22, 24, 29, 0.06);
+  --shadow-elevated: 0 1px 2px rgba(22, 24, 29, 0.05);
+  --shadow-modal:    0 12px 32px rgba(22, 24, 29, 0.16);
+
+  /* IBM Plex Sans — «инженерный» корпоративный гротеск */
+  --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ============================================================
+   HELIUM-10 — в духе одноимённого сервиса аналитики для Amazon.
+   Главное отличие от всех остальных: СВЕТЛЫЙ контент при ТЁМНОЙ рейке слева.
+   Так устроено большинство западных SaaS, и именно этой связки у нас не было —
+   раньше навбар всегда повторял светлоту страницы.
+   Палитра подобрана «в духе», а не пипеткой с их сайта.
+   ============================================================ */
+:root[data-theme="helium"] {
+  --color-canvas:           #F7F8FA;
+  --color-surface-base:     #F7F8FA;
+  --color-surface-card:     #FFFFFF;
+  --color-surface-elevated: #FBFCFD;
+  --color-surface-hover:    #F1F3F7;
+  --color-surface-active:   #E8ECF5;
+
+  --color-text-primary:   #131722;
+  --color-text-secondary: #4E566B;
+  --color-text-muted:     #78819A;
+  --color-text-disabled:  #A2A9BC;
+
+  --color-accent:             #1B62F0;
+  --color-accent-hover:       #1550CC;
+  --color-accent-dim:         #E2EBFE;
+  --color-accent-text:        #1B62F0;
+  --color-accent-glass:       #A6C1F8;
+  --color-focus-ring:         rgba(27, 98, 240, 0.22);
+
+  --color-success: #0F9960;
+  --color-warning: #B4761A;
+  --color-error:   #D33A48;
+  --color-info:    #1B62F0;
+
+  --color-success-tint: #E2F3EB;
+  --color-warning-tint: #FBEEDA;
+  --color-error-tint:   #FBE6E8;
+  --color-info-tint:    #E4ECFE;
+
+  --color-border:        #E4E7EE;
+  --color-border-light:  #D2D7E2;
+  --color-stroke-3:      #B6BDCC;
+  --color-glass-stroke:  #E4E7EE;
+
+  --color-btn-surface:        #FFFFFF;
+  --color-btn-surface-hover:  #F1F3F7;
+  --color-btn-surface-active: #E8ECF5;
+  --color-btn-surface-alt:    #FBFCFD;
+  --color-btn-border:         #D2D7E2;
+
+  --color-skeleton-base:      #E8ECF5;
+  --color-skeleton-highlight: #FFFFFF;
+  --color-skeleton-stroke:    #E4E7EE;
+  --color-loading-overlay:    rgba(247, 248, 250, 0.88);
+  --color-sheet-backdrop:     rgba(19, 23, 34, 0.42);
+
+  --gradient-card:   #FFFFFF;
+  --gradient-accent: linear-gradient(135deg, #1B62F0, #1550CC);
+  --gradient-hero:   #FFFFFF;
+
+  --radius-sm:  5px;
+  --radius-md:  6px;
+  --radius-lg:  8px;
+  --radius-xl:  8px;
+  --radius-2xl: 10px;
+
+  --shadow-card:     0 1px 2px rgba(19, 23, 34, 0.07);
+  --shadow-elevated: 0 1px 2px rgba(19, 23, 34, 0.06);
+  --shadow-modal:    0 16px 40px rgba(19, 23, 34, 0.20);
+
+  --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Тёмная рейка на светлой странице */
+  --rail-bg:          #141A2A;
+  --rail-border:      #232B40;
+  --rail-text:        #F2F4F8;
+  --rail-text-dim:    #A7B0C6;
+  --rail-text-muted:  #7A849C;
+  --rail-text-faint:  #5B6580;
+  --rail-hover-bg:    #1E2639;
+  --rail-active-bg:   #26304A;
+  --rail-accent:      #6D9BFF;
+}
+
+/* ============================================================
+   КОНТРАСТ — газетная строгость: чёрное на белом, один красный акцент,
+   углы почти квадратные, теней нет вообще. Самая «не-дизайнерская» тема:
+   ничего декоративного, только текст и линии.
+   ============================================================ */
+:root[data-theme="contrast"] {
+  --color-canvas:           #FFFFFF;
+  --color-surface-base:     #FFFFFF;
+  --color-surface-card:     #FFFFFF;
+  --color-surface-elevated: #F4F4F4;
+  --color-surface-hover:    #EFEFEF;
+  --color-surface-active:   #E4E4E4;
+
+  --color-text-primary:   #0A0A0A;
+  --color-text-secondary: #3D3D3D;
+  --color-text-muted:     #666666;
+  --color-text-disabled:  #949494;
+
+  --color-accent:             #D42D1F;
+  --color-accent-hover:       #B32418;
+  --color-accent-dim:         #FBE6E3;
+  --color-accent-text:        #D42D1F;
+  --color-accent-glass:       #EFA79F;
+  --color-focus-ring:         rgba(212, 45, 31, 0.22);
+
+  --color-success: #10714A;
+  --color-warning: #8A5D00;
+  --color-error:   #D42D1F;
+  --color-info:    #14487D;
+
+  --color-success-tint: #E6F1EC;
+  --color-warning-tint: #F6EEDC;
+  --color-error-tint:   #FBE6E3;
+  --color-info-tint:    #E4ECF4;
+
+  --color-border:        #D6D6D6;
+  --color-border-light:  #BDBDBD;
+  --color-stroke-3:      #9C9C9C;
+  --color-glass-stroke:  #D6D6D6;
+
+  --color-btn-surface:        #FFFFFF;
+  --color-btn-surface-hover:  #EFEFEF;
+  --color-btn-surface-active: #E4E4E4;
+  --color-btn-surface-alt:    #F4F4F4;
+  --color-btn-border:         #BDBDBD;
+
+  --color-skeleton-base:      #E9E9E9;
+  --color-skeleton-highlight: #FFFFFF;
+  --color-skeleton-stroke:    #D6D6D6;
+  --color-loading-overlay:    rgba(255, 255, 255, 0.90);
+  --color-sheet-backdrop:     rgba(10, 10, 10, 0.42);
+
+  --gradient-card:   #FFFFFF;
+  --gradient-accent: linear-gradient(135deg, #D42D1F, #B32418);
+  --gradient-hero:   #FFFFFF;
+
+  --radius-sm:  2px;
+  --radius-md:  3px;
+  --radius-lg:  3px;
+  --radius-xl:  4px;
+  --radius-2xl: 4px;
+
+  --shadow-card:     none;
+  --shadow-elevated: none;
+  --shadow-modal:    0 6px 24px rgba(10, 10, 10, 0.22);
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --rail-bg:          #0A0A0A;
+  --rail-border:      #262626;
+  --rail-text:        #FFFFFF;
+  --rail-text-dim:    #B0B0B0;
+  --rail-text-muted:  #8A8A8A;
+  --rail-text-faint:  #666666;
+  --rail-hover-bg:    #1C1C1C;
+  --rail-active-bg:   #2A2A2A;
+  --rail-accent:      #FF6A5A;
+}
+
+/* ============================================================
+   СЕПИЯ — тёплая тёмная. Не чёрная и не синяя, а коричнево-угольная,
+   как ночной режим читалки. Заметно мягче для глаз на длинной сессии.
+   ============================================================ */
+:root[data-theme="sepia"] {
+  --color-canvas:           #17130F;
+  --color-surface-base:     #17130F;
+  --color-surface-card:     #1F1A15;
+  --color-surface-elevated: #27211A;
+  --color-surface-hover:    #2F2820;
+  --color-surface-active:   #3A3128;
+
+  --color-text-primary:   #F0E7DA;
+  --color-text-secondary: #B6A895;
+  --color-text-muted:     #8C7F6E;
+  --color-text-disabled:  #6A5E50;
+
+  --color-accent:             #D9A441;
+  --color-accent-hover:       #E7B558;
+  --color-accent-dim:         #4A3A1C;
+  --color-accent-text:        #F5E2BC;
+  --color-accent-glass:       #8A6E38;
+  --color-focus-ring:         rgba(217, 164, 65, 0.26);
+
+  --color-success: #7FB069;
+  --color-warning: #D9A441;
+  --color-error:   #DE6B5C;
+  --color-info:    #96B3C7;
+
+  --color-success-tint: #232B1D;
+  --color-warning-tint: #2E2617;
+  --color-error-tint:   #2E1D1A;
+  --color-info-tint:    #1F272C;
+
+  --color-border:        #332B22;
+  --color-border-light:  #423830;
+  --color-stroke-3:      #55483C;
+  --color-glass-stroke:  #332B22;
+
+  --color-btn-surface:        #1F1A15;
+  --color-btn-surface-hover:  #2F2820;
+  --color-btn-surface-active: #3A3128;
+  --color-btn-surface-alt:    #27211A;
+  --color-btn-border:         #423830;
+
+  --color-skeleton-base:      #27211A;
+  --color-skeleton-highlight: #3F362C;
+  --color-skeleton-stroke:    #332B22;
+  --color-loading-overlay:    rgba(23, 19, 15, 0.84);
+  --color-sheet-backdrop:     rgba(23, 19, 15, 0.74);
+
+  --gradient-card:   #1F1A15;
+  --gradient-accent: linear-gradient(135deg, #D9A441, #E7B558);
+  --gradient-hero:   #1F1A15;
+
+  --radius-sm:  6px;
+  --radius-md:  9px;
+  --radius-lg:  12px;
+  --radius-xl:  14px;
+  --radius-2xl: 16px;
+
+  --shadow-card:     none;
+  --shadow-elevated: none;
+  --shadow-modal:    0 12px 34px rgba(0, 0, 0, 0.55);
+
+  --font-sans: 'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ============================================================
+   ИНДИГО — глубокий сине-фиолетовый почти-чёрный с лавандовым акцентом.
+   Тон, в котором сделаны Linear и Vercel: тёмная, но не «дашбордная».
+   ============================================================ */
+:root[data-theme="indigo"] {
+  --color-canvas:           #0C0C14;
+  --color-surface-base:     #0C0C14;
+  --color-surface-card:     #13131F;
+  --color-surface-elevated: #1A1A2A;
+  --color-surface-hover:    #212134;
+  --color-surface-active:   #2A2A41;
+
+  --color-text-primary:   #E9E9F2;
+  --color-text-secondary: #9E9EB8;
+  --color-text-muted:     #767693;
+  --color-text-disabled:  #56566E;
+
+  --color-accent:             #9B8CFF;
+  --color-accent-hover:       #AEA1FF;
+  --color-accent-dim:         #2C2748;
+  --color-accent-text:        #DCD6FF;
+  --color-accent-glass:       #6A5FB8;
+  --color-focus-ring:         rgba(155, 140, 255, 0.28);
+
+  --color-success: #5CD69A;
+  --color-warning: #E8B65C;
+  --color-error:   #FF6B84;
+  --color-info:    #7FB6FF;
+
+  --color-success-tint: #142A20;
+  --color-warning-tint: #2B2416;
+  --color-error-tint:   #2E1922;
+  --color-info-tint:    #182338;
+
+  --color-border:        #24243A;
+  --color-border-light:  #303049;
+  --color-stroke-3:      #3E3E5C;
+  --color-glass-stroke:  #24243A;
+
+  --color-btn-surface:        #13131F;
+  --color-btn-surface-hover:  #212134;
+  --color-btn-surface-active: #2A2A41;
+  --color-btn-surface-alt:    #1A1A2A;
+  --color-btn-border:         #303049;
+
+  --color-skeleton-base:      #1A1A2A;
+  --color-skeleton-highlight: #33334E;
+  --color-skeleton-stroke:    #24243A;
+  --color-loading-overlay:    rgba(12, 12, 20, 0.84);
+  --color-sheet-backdrop:     rgba(12, 12, 20, 0.74);
+
+  --gradient-card:   #13131F;
+  --gradient-accent: linear-gradient(135deg, #9B8CFF, #AEA1FF);
+  --gradient-hero:   #13131F;
+
+  --radius-sm:  6px;
+  --radius-md:  8px;
+  --radius-lg:  10px;
+  --radius-xl:  12px;
+  --radius-2xl: 14px;
+
+  --shadow-card:     none;
+  --shadow-elevated: none;
+  --shadow-modal:    0 16px 44px rgba(0, 0, 0, 0.6);
+
+  --font-sans: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Нативные контролы (даты, скроллбары) — по светлоте темы, а не по её имени */
+:root[data-scheme="light"] { color-scheme: light; }
+:root[data-scheme="dark"]  { color-scheme: dark; }

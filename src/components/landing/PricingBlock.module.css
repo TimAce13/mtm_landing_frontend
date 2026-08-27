@@ -1,0 +1,282 @@
+/* Переключатель периодов */
+.periods {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 44px;
+}
+
+.periodsInner {
+  display: inline-flex;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 999px;
+  border: 1px solid var(--lp-border);
+  background: var(--lp-bg);
+}
+
+.period {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: var(--lp-text-dim);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease;
+  white-space: nowrap;
+}
+
+.period:hover { color: var(--lp-text); }
+
+.periodActive {
+  background: var(--lp-text);
+  color: #06121C;
+}
+
+.periodDiscount {
+  display: inline-flex;
+  align-items: center;
+  height: 21px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--lp-accent);
+  color: #04121A;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.periodActive .periodDiscount {
+  background: var(--lp-accent-deep);
+  color: var(--lp-accent-bright);
+}
+
+/* Сетка тарифов: пробный + три платных */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 30px 26px;
+  border-radius: var(--lp-r-lg);
+  border: 1px solid var(--lp-border);
+  background: linear-gradient(165deg, var(--lp-surface) 0%, var(--lp-bg) 100%);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover { border-color: var(--lp-accent-deep); }
+
+.cardPopular {
+  border-color: var(--lp-accent);
+  box-shadow: 0 0 0 1px rgba(24, 199, 192, 0.25), 0 24px 60px -28px rgba(24, 199, 192, 0.5);
+}
+
+.cardTrial {
+  background: linear-gradient(165deg, rgba(24, 199, 192, 0.07), var(--lp-bg) 70%);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.name {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.popularTag {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--lp-accent);
+  color: #04121A;
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.tagline {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--lp-text-muted);
+  margin: 0 0 24px;
+  min-height: 44px;
+}
+
+/* Цена */
+.priceBlock {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--lp-border-soft);
+}
+
+.priceOld {
+  font-size: 15px;
+  color: var(--lp-text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--lp-danger);
+  height: 22px;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.price {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.priceUnit {
+  font-size: 15px;
+  color: var(--lp-text-muted);
+}
+
+.priceTotal {
+  margin-top: 8px;
+  font-size: 13.5px;
+  color: var(--lp-text-muted);
+}
+
+/* Чуть мельче обычной цены, чтобы «Бесплатно» и срок помещались в одну строку */
+.priceFree {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.priceFreeUnit {
+  font-size: 15px;
+  color: var(--lp-text-muted);
+}
+
+/* Состав тарифа */
+.listTitle {
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--lp-text-muted);
+  margin: 0 0 14px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  flex: 1;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--lp-text-dim);
+}
+
+.itemIcon {
+  color: var(--lp-accent);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.itemMuted {
+  color: var(--lp-text-muted);
+}
+
+.action {
+  margin-top: auto;
+  width: 100%;
+}
+
+/* Доп. магазины */
+.extra {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 28px;
+  border-radius: var(--lp-r-lg);
+  border: 1px dashed var(--lp-border);
+  background: var(--lp-bg-soft);
+  flex-wrap: wrap;
+}
+
+.extraText {
+  font-size: 15px;
+  color: var(--lp-text-dim);
+  margin: 0;
+}
+
+.extraText strong {
+  color: var(--lp-text);
+  font-weight: 650;
+}
+
+.extraPrice {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.extraPrice span {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--lp-text-muted);
+}
+
+.skeleton {
+  height: 460px;
+  border-radius: var(--lp-r-lg);
+  border: 1px solid var(--lp-border-soft);
+  background: linear-gradient(100deg, var(--lp-bg-soft) 30%, var(--lp-surface) 50%, var(--lp-bg-soft) 70%);
+  background-size: 240% 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+@keyframes shimmer {
+  from { background-position: 140% 0; }
+  to { background-position: -40% 0; }
+}
+
+@media (max-width: 1100px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 620px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .periodsInner { flex-wrap: wrap; justify-content: center; }
+  .period { height: 38px; padding: 0 14px; font-size: 14px; }
+  .tagline { min-height: 0; }
+}

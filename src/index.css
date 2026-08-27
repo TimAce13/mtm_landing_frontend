@@ -1,0 +1,85 @@
+/* Шрифты тем (@font-face) — до токенов, чтобы семейства были объявлены раньше,
+   чем на них сошлётся --font-sans. */
+@import './styles/fonts.css';
+
+/* Import design tokens first */
+@import './styles/tokens.css';
+
+/* ============================================================
+   Global reset & base styles
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 18px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  background: var(--color-canvas);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Headings reset (pages set their own styles) */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-text-primary);
+}
+
+/* Подчёркивание при наведении НЕ включаем глобально: почти все ссылки здесь —
+   пункты меню и кнопки-ссылки, у которых подчёркнутый текст выглядит сломанным.
+   Контентным ссылкам внутри текста подчёркивание задаётся точечно, в своих модулях. */
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-light);
+}

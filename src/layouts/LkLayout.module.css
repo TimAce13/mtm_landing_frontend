@@ -1,0 +1,156 @@
+.page {
+  min-height: 100vh;
+  background: var(--color-canvas);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Шапка в два ряда: верхний как публичный, нижний — разделы кабинета. */
+.topbar {
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface-base);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Размеры один в один с публичной шапкой (1200 / 72 / gap 28), иначе верх «прыгает» при переходе. */
+.topbarRow {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding-inline: 32px;
+}
+
+.lkRow {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline: 32px;
+  border-top: 1px solid var(--color-border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.lkRow::-webkit-scrollbar { display: none; }
+
+.lkNav {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+}
+
+/* Подчёркивание вместо заливки: второй ряд подчинён первому, а не спорит с ним. */
+.lkNavLink {
+  padding: 11px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: var(--transition-fast);
+}
+
+.lkNavLink:hover { color: var(--color-text-primary); }
+
+.lkNavLinkActive {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brand img {
+  width: 34px;
+  height: 34px;
+}
+
+/* Как на сайте: сразу за названием, а не по центру. */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.navLink {
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.navLink:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.navLinkActive {
+  background: var(--color-surface-active);
+  color: var(--color-accent-text);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.userEmail {
+  font-size: 15px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+/* Ширина как у шапки (1200), иначе колонка уже верха читается как панель на фоне. */
+.content {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 32px 64px;
+}
+
+/* Флекс-контейнер — .topbarRow (не .topbar). .nav переносим через flex-basis, а не width:
+   у .nav стоит flex:1, и width:100% им перебивается. */
+@media (max-width: 1000px) {
+  .topbarRow { height: auto; padding: 12px 16px; flex-wrap: wrap; gap: 12px; }
+  .nav {
+    order: 3;
+    flex: 1 0 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .navLink { padding: 6px 10px; font-size: 15px; }
+  .lkRow { padding-inline: 16px; }
+  .userEmail { max-width: 150px; }
+}
+
+@media (max-width: 640px) {
+  .userEmail { display: none; }
+}

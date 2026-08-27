@@ -1,0 +1,101 @@
+/* ============================================================
+   Input component styles
+   ============================================================ */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  padding-left: 4px;
+}
+
+.inputWrap {
+  display: flex;
+  align-items: center;
+  background: var(--gradient-card);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 0 18px;
+  transition: var(--transition-fast);
+  min-height: 52px;
+}
+
+.inputWrap:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
+.inputWrap.hasError {
+  border-color: var(--color-error);
+}
+
+.inputWrap.hasError:focus-within {
+  box-shadow: 0 0 0 3px rgba(255, 93, 110, 0.18);
+}
+
+.input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: 18px;
+  color: var(--color-text-primary);
+  padding: 14px 0;
+  min-width: 0;
+}
+
+.input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Remove browser autofill background */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-text-primary);
+  -webkit-box-shadow: 0 0 0 100px var(--color-surface-card) inset;
+  transition: background-color 5000s ease-in-out;
+}
+
+.suffix {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.eyeBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+}
+
+.eyeBtn:hover {
+  color: var(--color-text-secondary);
+  background: var(--color-surface-hover);
+}
+
+.errorText {
+  font-size: 15px;
+  color: var(--color-error);
+  padding-left: 4px;
+  margin: 0;
+}

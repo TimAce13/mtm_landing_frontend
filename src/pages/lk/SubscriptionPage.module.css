@@ -1,0 +1,292 @@
+/* Конструктор подписки в ЛК: период → тариф → модули → магазины → итог. */
+
+.stepLabel {
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--color-text-secondary);
+  margin: 28px 0 14px;
+}
+
+.stepLabel:first-of-type { margin-top: 8px; }
+
+.stepHint {
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+/* Периоды */
+.periods {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.period {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.period:hover { color: var(--color-text-primary); background: var(--color-surface-hover); }
+
+.periodActive {
+  background: var(--color-surface-active);
+  border-color: var(--color-accent);
+  color: var(--color-accent-text);
+}
+
+.periodBadge {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: #08111B;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Тарифы */
+.plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.plan {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-sans);
+  transition: var(--transition-fast);
+}
+
+.plan:hover { border-color: var(--color-border-light); background: var(--color-surface-hover); }
+
+.planActive {
+  border-color: var(--color-accent);
+  background: var(--color-surface-active);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
+.planName {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.planTag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: #08111B;
+  white-space: nowrap;
+}
+
+.planPrice {
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--color-accent-text);
+  letter-spacing: -0.02em;
+}
+
+.planPrice small {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.planMeta {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+/* Модули */
+.modules {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.module {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-sans);
+  transition: var(--transition-fast);
+}
+
+.module:hover:not(:disabled) { border-color: var(--color-border-light); background: var(--color-surface-hover); }
+.module:disabled { cursor: default; opacity: 0.85; }
+
+.moduleActive {
+  border-color: var(--color-accent);
+  background: var(--color-surface-active);
+}
+
+.moduleCheck {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  border-radius: 6px;
+  border: 1.5px solid var(--color-border-light);
+  display: grid;
+  place-items: center;
+  color: #08111B;
+}
+
+.moduleActive .moduleCheck {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.moduleName {
+  display: block;
+  font-size: 16px;
+  font-weight: 650;
+  color: var(--color-text-primary);
+  margin-bottom: 3px;
+}
+
+.moduleDesc {
+  display: block;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.alwaysNote {
+  margin: 14px 0 0;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+/* Магазины */
+.stores {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.storeBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-primary);
+  font-size: 20px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.storeBtn:hover:not(:disabled) { background: var(--color-surface-hover); border-color: var(--color-accent); }
+.storeBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.storeValue {
+  font-size: 18px;
+  font-weight: 650;
+  color: var(--color-text-primary);
+  min-width: 130px;
+}
+
+.storeValue small {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+.storeHint {
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+/* Итог */
+.total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 28px;
+  padding: 20px 24px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-accent-dim);
+  background: var(--color-surface-active);
+  flex-wrap: wrap;
+}
+
+.totalLabel {
+  font-size: 15px;
+  color: var(--color-text-secondary);
+}
+
+.totalMeta {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.totalValue {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-accent-text);
+}
+
+/* Триал */
+.trialBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+  padding: 20px 24px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-accent-dim);
+  background: var(--color-surface-active);
+  flex-wrap: wrap;
+}
+
+.trialTitle {
+  font-size: 17px;
+  font-weight: 650;
+  color: var(--color-text-primary);
+}
+
+.trialText {
+  margin-top: 4px;
+  font-size: 14.5px;
+  color: var(--color-text-secondary);
+}

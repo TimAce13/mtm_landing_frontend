@@ -1,0 +1,96 @@
+/* ============================================================
+   Шрифты тем — самохостинг
+   ============================================================
+   Подключаются локально, а не с Google Fonts: в index.html стоит
+   Content-Security-Policy с `font-src 'self'`, внешние шрифты она режет.
+   Пакеты @fontsource кладут woff2 в сборку, Vite их хеширует и отдаёт с
+   нашего же домена.
+
+   Здесь объявляются ТОЛЬКО @font-face. Файл шрифта браузер скачивает лениво —
+   лишь когда какой-то элемент реально им отрисовывается. Поэтому все четыре
+   семейства в одном файле ничего не весят: пользователь тянет только шрифт
+   активной темы, а при переключении — следующий.
+
+   Наборы: latin + cyrillic. Начертания 400/500/600/700 — интерфейс использует
+   все четыре (обычный текст, подписи, кнопки, заголовки).
+   ============================================================ */
+
+/* --- Onest — тема «Графит» --- */
+@import '@fontsource/onest/latin-400.css';
+@import '@fontsource/onest/latin-500.css';
+@import '@fontsource/onest/latin-600.css';
+@import '@fontsource/onest/latin-700.css';
+@import '@fontsource/onest/cyrillic-400.css';
+@import '@fontsource/onest/cyrillic-500.css';
+@import '@fontsource/onest/cyrillic-600.css';
+@import '@fontsource/onest/cyrillic-700.css';
+
+/* --- Golos Text — тема «Бумага» --- */
+@import '@fontsource/golos-text/latin-400.css';
+@import '@fontsource/golos-text/latin-500.css';
+@import '@fontsource/golos-text/latin-600.css';
+@import '@fontsource/golos-text/latin-700.css';
+@import '@fontsource/golos-text/cyrillic-400.css';
+@import '@fontsource/golos-text/cyrillic-500.css';
+@import '@fontsource/golos-text/cyrillic-600.css';
+@import '@fontsource/golos-text/cyrillic-700.css';
+
+/* --- IBM Plex Sans — тема «Сталь» --- */
+@import '@fontsource/ibm-plex-sans/latin-400.css';
+@import '@fontsource/ibm-plex-sans/latin-500.css';
+@import '@fontsource/ibm-plex-sans/latin-600.css';
+@import '@fontsource/ibm-plex-sans/latin-700.css';
+@import '@fontsource/ibm-plex-sans/cyrillic-400.css';
+@import '@fontsource/ibm-plex-sans/cyrillic-500.css';
+@import '@fontsource/ibm-plex-sans/cyrillic-600.css';
+@import '@fontsource/ibm-plex-sans/cyrillic-700.css';
+
+/* --- JetBrains Mono — тема «Терминал» --- */
+@import '@fontsource/jetbrains-mono/latin-400.css';
+@import '@fontsource/jetbrains-mono/latin-500.css';
+@import '@fontsource/jetbrains-mono/latin-600.css';
+@import '@fontsource/jetbrains-mono/latin-700.css';
+@import '@fontsource/jetbrains-mono/cyrillic-400.css';
+@import '@fontsource/jetbrains-mono/cyrillic-500.css';
+@import '@fontsource/jetbrains-mono/cyrillic-600.css';
+@import '@fontsource/jetbrains-mono/cyrillic-700.css';
+
+/* --- Manrope — тема «Helium-10» --- */
+@import '@fontsource/manrope/latin-400.css';
+@import '@fontsource/manrope/latin-500.css';
+@import '@fontsource/manrope/latin-600.css';
+@import '@fontsource/manrope/latin-700.css';
+@import '@fontsource/manrope/cyrillic-400.css';
+@import '@fontsource/manrope/cyrillic-500.css';
+@import '@fontsource/manrope/cyrillic-600.css';
+@import '@fontsource/manrope/cyrillic-700.css';
+
+/* --- Inter — тема «Контраст» (и заодно наконец настоящий Inter, а не системная подмена) --- */
+@import '@fontsource/inter/latin-400.css';
+@import '@fontsource/inter/latin-500.css';
+@import '@fontsource/inter/latin-600.css';
+@import '@fontsource/inter/latin-700.css';
+@import '@fontsource/inter/cyrillic-400.css';
+@import '@fontsource/inter/cyrillic-500.css';
+@import '@fontsource/inter/cyrillic-600.css';
+@import '@fontsource/inter/cyrillic-700.css';
+
+/* --- Nunito Sans — тема «Сепия» --- */
+@import '@fontsource/nunito-sans/latin-400.css';
+@import '@fontsource/nunito-sans/latin-500.css';
+@import '@fontsource/nunito-sans/latin-600.css';
+@import '@fontsource/nunito-sans/latin-700.css';
+@import '@fontsource/nunito-sans/cyrillic-400.css';
+@import '@fontsource/nunito-sans/cyrillic-500.css';
+@import '@fontsource/nunito-sans/cyrillic-600.css';
+@import '@fontsource/nunito-sans/cyrillic-700.css';
+
+/* --- Rubik — тема «Индиго» --- */
+@import '@fontsource/rubik/latin-400.css';
+@import '@fontsource/rubik/latin-500.css';
+@import '@fontsource/rubik/latin-600.css';
+@import '@fontsource/rubik/latin-700.css';
+@import '@fontsource/rubik/cyrillic-400.css';
+@import '@fontsource/rubik/cyrillic-500.css';
+@import '@fontsource/rubik/cyrillic-600.css';
+@import '@fontsource/rubik/cyrillic-700.css';

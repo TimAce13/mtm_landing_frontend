@@ -1,0 +1,32 @@
+/* Шапка внутренних публичных страниц: единый ритм для /features, /pricing, /faq и т.д. */
+
+.head {
+  position: relative;
+  padding-top: 76px;
+  padding-bottom: 56px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.glow {
+  width: 620px;
+  height: 420px;
+  top: -240px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.inner .lpLead {
+  margin-inline: auto;
+}
+
+@media (max-width: 640px) {
+  .head { padding-top: 48px; padding-bottom: 36px; }
+}

@@ -1,0 +1,245 @@
+/* Единая шапка и подвал всех публичных страниц лендинга. */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(7, 14, 23, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+/* Граница появляется только когда страница прокручена — на самом верху шапка «сливается» с героем */
+.headerScrolled {
+  border-bottom-color: var(--lp-border-soft);
+  background: rgba(7, 14, 23, 0.9);
+}
+
+.headerInner {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  color: var(--lp-text);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.brand img {
+  width: 34px;
+  height: 34px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.navLink {
+  padding: 8px 14px;
+  border-radius: var(--lp-r-sm);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--lp-text-dim);
+  text-decoration: none;
+  transition: color 0.15s ease, background 0.15s ease;
+  white-space: nowrap;
+}
+
+.navLink:hover {
+  color: var(--lp-text);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.navLinkActive {
+  color: var(--lp-accent);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Кнопка-бургер только на узких экранах */
+.burger {
+  display: none;
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--lp-r-sm);
+  border: 1px solid var(--lp-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--lp-text);
+  cursor: pointer;
+}
+
+.mobileMenu {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px var(--lp-gutter) 20px;
+  border-top: 1px solid var(--lp-border-soft);
+  background: rgba(7, 14, 23, 0.98);
+}
+
+.mobileMenu .navLink {
+  padding: 12px 14px;
+  font-size: 16px;
+}
+
+.mobileActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.mobileActions > * {
+  flex: 1;
+}
+
+@media (max-width: 900px) {
+  /* На узких экранах в шапке остаётся только бургер: кнопки не помещаются рядом
+     с логотипом и налезают друг на друга. Вход и регистрация — внутри меню.
+     Селектор из двух классов обязателен: глобальный .lpBtn (landing.css) грузится
+     после этого модуля и при равной специфичности перебил бы display: none. */
+  .nav,
+  .actions .desktopOnly {
+    display: none;
+  }
+  .burger {
+    display: inline-flex;
+  }
+  .actions {
+    margin-left: auto;
+  }
+  .mobileMenuOpen {
+    display: flex;
+  }
+}
+
+/* ── Подвал ─────────────────────────────────────────────── */
+
+.footer {
+  margin-top: auto;
+  border-top: 1px solid var(--lp-border-soft);
+  background: var(--lp-bg-soft);
+  padding-block: 64px 32px;
+}
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(3, 1fr);
+  gap: 40px;
+  padding-bottom: 48px;
+}
+
+.footerBrand {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 320px;
+}
+
+.footerBrandRow {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--lp-text);
+}
+
+.footerBrandRow img {
+  width: 34px;
+  height: 34px;
+}
+
+.footerAbout {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--lp-text-muted);
+  margin: 0;
+}
+
+.footerColTitle {
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--lp-text-muted);
+  margin: 0 0 16px;
+}
+
+.footerLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.footerLinks a {
+  font-size: 15px;
+  color: var(--lp-text-dim);
+  text-decoration: none;
+  transition: color 0.15s ease;
+  width: fit-content;
+}
+
+.footerLinks a:hover {
+  color: var(--lp-accent);
+}
+
+.footerBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 28px;
+  border-top: 1px solid var(--lp-border-soft);
+  font-size: 14px;
+  color: var(--lp-text-muted);
+  flex-wrap: wrap;
+}
+
+.footerLegal {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footerLegal a {
+  color: var(--lp-text-muted);
+  text-decoration: none;
+}
+
+.footerLegal a:hover {
+  color: var(--lp-text-dim);
+}
+
+@media (max-width: 900px) {
+  .footerGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+  }
+  .footerBrand {
+    grid-column: 1 / -1;
+    max-width: none;
+  }
+}

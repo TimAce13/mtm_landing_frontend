@@ -1,0 +1,21 @@
+.doc {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px;
+  border-radius: var(--lp-r-lg);
+  border: 1px solid var(--lp-border);
+  background: var(--lp-bg-soft);
+}
+
+.para {
+  font-size: 16px;
+  line-height: 1.72;
+  color: var(--lp-text-dim);
+  margin: 0 0 18px;
+}
+
+.para:last-child { margin-bottom: 0; }
+
+@media (max-width: 640px) {
+  .doc { padding: 24px; }
+}

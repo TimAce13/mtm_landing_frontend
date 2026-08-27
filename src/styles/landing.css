@@ -1,0 +1,343 @@
+/* ============================================================
+   Дизайн-система публичной части (лендинг).
+
+   Лендинг намеренно НЕ наследует переключатель тем приложения: у публичной
+   страницы должен быть один выверенный вид. Палитра взята из «Морской» темы
+   продукта, поэтому переход лендинг → приложение выглядит цельным.
+   ============================================================ */
+
+.landing {
+  /* Фоны */
+  --lp-bg: #070E17;
+  --lp-bg-soft: #0A1420;
+  --lp-surface: #0E1B29;
+  --lp-surface-2: #122436;
+  --lp-border: #1C2E42;
+  --lp-border-soft: #16273A;
+
+  /* Текст */
+  --lp-text: #EAF2FA;
+  --lp-text-dim: #9CB0C4;
+  --lp-text-muted: #6C8299;
+
+  /* Акцент */
+  --lp-accent: #18C7C0;
+  --lp-accent-bright: #35E3DB;
+  --lp-accent-deep: #0C6E6B;
+  --lp-accent-glow: rgba(24, 199, 192, 0.16);
+
+  /* Семантика */
+  --lp-success: #23D07E;
+  --lp-warning: #F5B84B;
+  --lp-danger: #FF5D6E;
+  --lp-info: #57C7FF;
+
+  /* Радиусы и тени */
+  --lp-r-sm: 10px;
+  --lp-r-md: 14px;
+  --lp-r-lg: 20px;
+  --lp-r-xl: 28px;
+  --lp-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.6);
+  --lp-shadow-lift: 0 32px 80px -24px rgba(0, 0, 0, 0.75);
+
+  /* Ритм */
+  --lp-max: 1200px;
+  --lp-gutter: 32px;
+  --lp-section: 120px;
+
+  background: var(--lp-bg);
+  color: var(--lp-text);
+  font-family: var(--font-sans);
+  /* Приложение живёт на 18px; лендингу нужна своя, более «сайтовая» база. */
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+}
+
+.landing *,
+.landing *::before,
+.landing *::after {
+  box-sizing: border-box;
+}
+
+/* ── Контейнер и секции ─────────────────────────────────── */
+
+.lpContainer {
+  width: 100%;
+  max-width: var(--lp-max);
+  margin: 0 auto;
+  padding-inline: var(--lp-gutter);
+}
+
+.lpSection {
+  padding-block: var(--lp-section);
+  position: relative;
+}
+
+.lpSectionTight {
+  padding-block: 80px;
+}
+
+/* Разделитель-градиент между секциями — мягче, чем сплошная линия */
+.lpDivider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--lp-border), transparent);
+  border: none;
+  margin: 0;
+}
+
+/* ── Типографика ────────────────────────────────────────── */
+
+.lpEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lp-accent);
+  margin-bottom: 18px;
+}
+
+.lpEyebrow::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: var(--lp-accent);
+  opacity: 0.7;
+}
+
+/* text-wrap: balance выравнивает длину строк в заголовках — без него последняя
+   строка часто остаётся из одного слова («…скрытых / условий»). */
+.lpH1 {
+  font-size: clamp(38px, 5.4vw, 62px);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  margin: 0;
+  color: var(--lp-text);
+  text-wrap: balance;
+}
+
+.lpH2 {
+  font-size: clamp(28px, 3.4vw, 42px);
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.lpH3 {
+  font-size: 20px;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  font-weight: 650;
+  margin: 0;
+}
+
+.lpLead {
+  font-size: clamp(17px, 1.5vw, 20px);
+  line-height: 1.6;
+  color: var(--lp-text-dim);
+  margin: 20px 0 0;
+  max-width: 62ch;
+}
+
+.lpBody {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--lp-text-dim);
+  margin: 0;
+}
+
+.lpAccentText {
+  color: var(--lp-accent);
+}
+
+/* Заголовок секции по центру */
+.lpSectionHead {
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto 64px;
+}
+
+.lpSectionHead .lpLead {
+  margin-inline: auto;
+}
+
+.lpSectionHead .lpEyebrow::before {
+  display: none;
+}
+
+/* ── Кнопки ─────────────────────────────────────────────── */
+
+.lpBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 28px;
+  border-radius: var(--lp-r-md);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+  white-space: nowrap;
+}
+
+.lpBtnPrimary {
+  background: linear-gradient(135deg, var(--lp-accent) 0%, var(--lp-accent-bright) 100%);
+  color: #04121A;
+  box-shadow: 0 10px 30px -12px rgba(24, 199, 192, 0.7);
+}
+
+.lpBtnPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px -14px rgba(24, 199, 192, 0.85);
+}
+
+.lpBtnGhost {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--lp-border);
+  color: var(--lp-text);
+  backdrop-filter: blur(8px);
+}
+
+.lpBtnGhost:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--lp-accent-deep);
+  transform: translateY(-2px);
+}
+
+.lpBtnSm {
+  height: 40px;
+  padding: 0 18px;
+  font-size: 15px;
+  border-radius: var(--lp-r-sm);
+}
+
+.lpBtnLg {
+  height: 58px;
+  padding: 0 34px;
+  font-size: 17px;
+}
+
+/* ── Карточки ───────────────────────────────────────────── */
+
+.lpCard {
+  background: linear-gradient(160deg, var(--lp-surface) 0%, var(--lp-bg-soft) 100%);
+  border: 1px solid var(--lp-border);
+  border-radius: var(--lp-r-lg);
+  padding: 32px;
+  position: relative;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lpCardHover:hover {
+  border-color: var(--lp-accent-deep);
+  transform: translateY(-3px);
+  box-shadow: var(--lp-shadow);
+}
+
+/* ── Свечения фона ──────────────────────────────────────── */
+
+.lpGlow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lpGlowAccent {
+  background: var(--lp-accent-glow);
+}
+
+/* Тонкая сетка на фоне героя */
+.lpGrid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+
+/* ── Появление при скролле ──────────────────────────────── */
+
+.lpReveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+/* Признак «показан» — АТРИБУТ, а не класс. React при перерисовке элемента
+   (раскрытие вопроса в FAQ, смена фильтра, переключение периода в тарифах)
+   переписывает class целиком по JSX и стёр бы класс, добавленный извне, —
+   блок снова становился прозрачным до следующей прокрутки. Атрибут, которого
+   нет в JSX, React не трогает. */
+.lpReveal[data-revealed] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lpReveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .lpBtn:hover,
+  .lpCardHover:hover {
+    transform: none;
+  }
+}
+
+/* ── Сетки ──────────────────────────────────────────────── */
+
+.lpGrid2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.lpGrid3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.lpGrid4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 980px) {
+  .landing { --lp-section: 88px; --lp-gutter: 24px; }
+  .lpGrid3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lpGrid4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .landing { --lp-section: 64px; --lp-gutter: 18px; }
+  .lpGrid2, .lpGrid3, .lpGrid4 { grid-template-columns: minmax(0, 1fr); }
+  .lpCard { padding: 24px; }
+  .lpSectionHead { margin-bottom: 40px; }
+}

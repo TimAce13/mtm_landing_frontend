@@ -1,0 +1,225 @@
+.tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.tab {
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--lp-border);
+  background: transparent;
+  color: var(--lp-text-dim);
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  font-weight: 550;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.tab:hover { color: var(--lp-text); border-color: var(--lp-accent-deep); }
+
+.tabActive {
+  background: var(--lp-accent);
+  border-color: var(--lp-accent);
+  color: #04121A;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.card {
+  display: block;
+  text-align: left;
+  padding: 0;
+  border-radius: var(--lp-r-lg);
+  border: 1px solid var(--lp-border);
+  background: var(--lp-bg-soft);
+  overflow: hidden;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  color: inherit;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--lp-accent-deep);
+  transform: translateY(-3px);
+}
+
+.thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(140deg, var(--lp-surface-2), var(--lp-surface));
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.play {
+  position: absolute;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: rgba(7, 14, 23, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(6px);
+  display: grid;
+  place-items: center;
+  color: var(--lp-text);
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+
+.card:hover .play {
+  background: var(--lp-accent);
+  color: #04121A;
+  transform: scale(1.06);
+}
+
+.duration {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(7, 14, 23, 0.85);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--lp-text-dim);
+}
+
+.body { padding: 20px; }
+
+.cat {
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--lp-accent);
+}
+
+.title {
+  font-size: 17px;
+  font-weight: 650;
+  margin: 8px 0 6px;
+  line-height: 1.32;
+  color: var(--lp-text);
+}
+
+.desc {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--lp-text-muted);
+  margin: 0;
+}
+
+.empty {
+  max-width: 620px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 56px 32px;
+  border-radius: var(--lp-r-lg);
+  border: 1px dashed var(--lp-border);
+  background: var(--lp-bg-soft);
+}
+
+.empty a { color: var(--lp-accent); text-decoration: none; }
+.empty a:hover { text-decoration: underline; }
+
+/* ── Модалка плеера ─────────────────────────────────────── */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(4, 9, 15, 0.86);
+  backdrop-filter: blur(6px);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  animation: fadeIn 0.16s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+
+.modalInner {
+  width: min(960px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  border-radius: var(--lp-r-lg);
+  padding: 24px;
+}
+
+.modalHead {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.close {
+  margin-left: auto;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  border: 1px solid var(--lp-border);
+  background: transparent;
+  color: var(--lp-text-dim);
+  cursor: pointer;
+}
+
+.close:hover { color: var(--lp-text); border-color: var(--lp-accent-deep); }
+
+.player {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--lp-r-md);
+  overflow: hidden;
+  background: #000;
+}
+
+.player iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.modalDesc {
+  margin: 18px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--lp-text-dim);
+}
+
+.modalLink {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--lp-accent);
+  text-decoration: none;
+}
+
+.modalLink:hover { text-decoration: underline; }
+
+@media (max-width: 980px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .modalInner { padding: 16px; }
+}

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- Security headers (fallback для статик-хостинга без своих HTTP-заголовков).
+         ВАЖНО: при подключении боевого CloudPayments-виджета добавить
+         script-src https://widget.cloudpayments.ru и frame-src https://widget.cloudpayments.ru -->
+    <!-- connect-src: фронт отдаётся с mtmanalytic.ru (App Platform), а API живёт в кластере
+         на lk-api.mtmanalytic.ru — это ВНЕШНИЙ origin, и без него запросы блокируются.
+         'self' оставлен для стенда, где vite-прокси даёт один origin.
+         Домен здесь намеренно захардкожен: смена адреса API обязана быть осознанной
+         правкой политики безопасности, а не побочным эффектом переменной окружения. -->
+    <meta http-equiv="Content-Security-Policy"
+          content="
+            default-src 'self';
+            script-src  'self';
+            style-src   'self' 'unsafe-inline';
+            img-src     'self' data: blob:;
+            connect-src 'self' https://lk-api.mtmanalytic.ru;
+            font-src    'self';
+            object-src  'none';
+            base-uri    'self';
+            form-action 'self';
+          " />
+
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy"
+          content="camera=(), microphone=(), geolocation=()" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/mtmicon.png" />
+
+    <title>MTM Analytics — аналитика для продавцов маркетплейсов</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

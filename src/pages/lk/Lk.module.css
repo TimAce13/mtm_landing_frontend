@@ -1,0 +1,250 @@
+/* Общие стили страниц ЛК. */
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--color-text-primary);
+  margin: 0 0 6px;
+}
+
+.subtitle {
+  font-size: 17px;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* Мягкая подложка без рамки и тени. Рамки оставлены только на блоках выбора
+   (.planOption, модули) — там контур несёт смысл «это вариант». */
+.card {
+  background: var(--color-surface-card);
+  border-radius: var(--radius-lg);
+  padding: 26px 28px;
+  margin-bottom: 20px;
+}
+
+.cardTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 16px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 17px;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.rowLabel {
+  color: var(--color-text-secondary);
+}
+
+.rowValue {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  text-align: right;
+}
+
+.statusActive { color: var(--color-success); font-weight: 700; }
+.statusExpired { color: var(--color-error); font-weight: 700; }
+.statusNone { color: var(--color-text-muted); font-weight: 600; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.badgeSuccess { background: var(--color-success-tint); color: var(--color-success); }
+.badgeError { background: var(--color-error-tint); color: var(--color-error); }
+.badgeMuted { background: var(--color-surface-active); color: var(--color-text-secondary); }
+
+.plansGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.planOption {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  background: transparent;
+  text-align: left;
+  font-family: var(--font-sans);
+}
+
+.planOption:hover {
+  border-color: var(--color-border-light);
+  background: var(--color-surface-hover);
+}
+
+.planOptionActive {
+  border-color: var(--color-accent);
+  background: var(--color-surface-active);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
+.planOptionName {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 4px;
+}
+
+.planOptionPrice {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-accent-text);
+  margin: 0 0 8px;
+}
+
+.planOptionMeta {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.table th {
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--color-text-muted);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.empty {
+  color: var(--color-text-muted);
+  font-size: 16px;
+  text-align: center;
+  padding: 24px 0;
+}
+
+.errorBanner {
+  display: flex;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--color-error-tint);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-md);
+  color: var(--color-error);
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.successBanner {
+  display: flex;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--color-success-tint);
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-md);
+  color: var(--color-success);
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.infoBanner {
+  display: flex;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--color-info-tint);
+  border: 1px solid var(--color-info);
+  border-radius: var(--radius-md);
+  color: var(--color-info);
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 440px;
+}
+
+.guideGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.guideCard {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: var(--transition-fast);
+}
+
+.guideCard:hover {
+  border-color: var(--color-border-light);
+  background: var(--color-surface-hover);
+}
+
+.guideTitle {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.guideDesc {
+  font-size: 15px;
+  color: var(--color-text-secondary);
+  margin: 0;
+  flex: 1;
+}
+
+.guideTag {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted);
+}
